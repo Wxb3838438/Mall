@@ -84,6 +84,7 @@ export default {
   created() {
     this.dataiid = this.$route.params.iid;
     DetailData(this.dataiid).then((res) => {
+      // console.log(res)
       const data = res.result;
       console.log(data);
       //获取轮播图

@@ -21,13 +21,15 @@ export default {
   },
   methods: {
     details() {
-      this.$router.push("/details/" + this.goodsList.iid);
+      this.$router.push("/details/" + this.iid);
+      console.log(this.goodsList)
     },
     itemImgLoad() {
       // if (this.$route.path === '/home') {
       //发射一个时间  事件总线  就是像vuex一样的  在所有父组件都可以接收到该事件
       //但是找个$bus是未定义的  需要在min.vue 创造模型
       this.$bus.$emit("itemImgLoad");
+      // console.log()
       // }else{
       // console.log('你是笨蛋')
       // }
@@ -37,6 +39,9 @@ export default {
   computed: {
     showImg() {
       return this.goodsList.image || this.goodsList.show.img;
+    },
+    iid() {
+      return this.goodsList.iid || this.goodsList.item_id
     },
     price() {
       return this.goodsList.orgPrice || "￥" + this.goodsList.price;
