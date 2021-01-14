@@ -20,7 +20,7 @@ export class itemShopInfo {
 		// 价格
 		this.price = itemInfo.price;
 		// 折前价格
-		this.lowPrice = itemInfo.lowPrice;
+		this.lowNowPrice = itemInfo.lowNowPrice;
 		//几折
 		this.discountDesc = itemInfo.discountDesc;
 		// 收藏 销量数

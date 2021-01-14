@@ -9,6 +9,7 @@
       @scroll="contentScroll"
     >
       <Swiper :banners="topSwiperImg" v-if="topSwiperImg" class="swiper" />
+      
       <item-shop-info :itemInfo="itemInfo" :promotions="promotions" />
       <shop-info :shopInfo="shopInfo" v-if="shopInfo" />
       <detail-image-info :DetailImage="DetailImage" @imageLoad="imageLoad" />
@@ -22,7 +23,7 @@
       </div>
     </better-scroll>
     <back-top @click.native="backtop" v-show="isshowBackTop" />
-    <bottom-nav-bar @addCartShop="addCartShop"/>
+    <bottom-nav-bar @addCartShop="addCartShop" />
   </div>
 </template>
 
@@ -156,16 +157,19 @@ export default {
     backtop() {
       this.$refs.scroll.scrollTop(0, 0, 500);
     },
-    addCartShop(){
-      const Product ={}
-      Product.image = this.topSwiperImg[0]
-      Product.title = this.itemInfo.title
-      Product.price = this.itemInfo.price
-      Product.iid = this.dataiid
-     //调用Vuex  mutations方法将数据传递到仓库里面进行处理
-      this.$store.commit('pushCart',Product)
-
-    }
+    addCartShop() {
+      const Product = {};
+      Product.image = this.topSwiperImg[0];
+      Product.title = this.itemInfo.title;
+      Product.price = this.itemInfo.lowNowPrice;
+      Product.iid = this.dataiid;
+      Product.name = this.shopInfo.name;
+      Product.check = true
+      Product.desc = this.itemInfo.desc
+      // console.log(this.shopInfo)
+      //调用Vuex  mutations方法将数据传递到仓库里面进行处理
+      this.$store.dispatch("pushCart", Product);
+    },
   },
 };
 </script>
@@ -176,12 +180,6 @@ export default {
   height: 100vh;
   z-index: 999;
   position: relative;
-}
-.common {
-  border-radius: 10px;
-  margin: 10px;
-  background-color: #fff;
-  padding: 10px;
 }
 .content {
   overflow: hidden;
