@@ -17,7 +17,6 @@ export let itemImgLoad = {
            * 接收到事件之后调用scroll的重新计算高度的方法*/
 			refresh();
 		};
-		//内存中的模板已挂载到页面中
 		this.$bus.$on('itemImgLoad', this.imgLoadOffFn);
 	}
 };

@@ -9,7 +9,7 @@
       @scroll="contentScroll"
     >
       <Swiper :banners="topSwiperImg" v-if="topSwiperImg" class="swiper" />
-      
+
       <item-shop-info :itemInfo="itemInfo" :promotions="promotions" />
       <shop-info :shopInfo="shopInfo" v-if="shopInfo" />
       <detail-image-info :DetailImage="DetailImage" @imageLoad="imageLoad" />
@@ -19,11 +19,18 @@
       ></detail-params-info>
       <detail-rate-info :RateInfo="RateInfo" ref="RateInfo" />
       <div class="common">
-        <goods :Goods="Recommends" ref="Recommends"></goods>
+        <goods ref="Recommends">
+          <goods-item
+            v-for="(item, index) in Recommends.list"
+            :goodsList="Recommends.list[index]"
+            :key="index"
+          />
+        </goods>
       </div>
     </better-scroll>
     <back-top @click.native="backtop" v-show="isshowBackTop" />
     <bottom-nav-bar @addCartShop="addCartShop" />
+    <!-- <toast :message="msg" :show="toastShow" /> -->
   </div>
 </template>
 
@@ -46,7 +53,9 @@ import {
 } from "network/detail/detail";
 import { itemImgLoad, showbackTop } from "common/mixin";
 import { debounce } from "common/utils";
+import GoodsItem from "../../components/common/GoodsList/GoodsItem.vue";
 
+// import Toast from "components/common/toast/Toast.vue";
 export default {
   name: "Details",
   components: {
@@ -60,7 +69,8 @@ export default {
     DetailRateInfo,
     Goods,
     BottomNavBar,
-    // BackTop,
+    GoodsItem,
+    // Toast,
   },
   data() {
     return {
@@ -76,6 +86,8 @@ export default {
       themTopYs: [],
       getThemTopY: null,
       currentIndex: 0,
+      // msg: "",
+      // toastShow: false,
     };
   },
   mixins: [itemImgLoad, showbackTop],
@@ -121,7 +133,7 @@ export default {
     //获取详情页推荐商品数据
     recommends().then((res) => {
       this.Recommends = res.data;
-      // console.log(res);
+      console.log(this.Recommends);
     });
   },
   destroyed() {
@@ -164,11 +176,20 @@ export default {
       Product.price = this.itemInfo.lowNowPrice;
       Product.iid = this.dataiid;
       Product.name = this.shopInfo.name;
-      Product.check = true
-      Product.desc = this.itemInfo.desc
+      Product.check = true;
+      Product.desc = this.itemInfo.desc;
       // console.log(this.shopInfo)
       //调用Vuex  mutations方法将数据传递到仓库里面进行处理
-      this.$store.dispatch("pushCart", Product);
+      this.$store.dispatch("pushCart", Product).then((res) => {
+        // this.toastShow = true;
+        // this.msg = res;
+        // console.log(res);
+        //   setTimeout(() => {
+        //     this.toastShow = false;
+        //   }, 2000);
+
+        this.$toast.show(res, 2000);
+      });
     },
   },
 };

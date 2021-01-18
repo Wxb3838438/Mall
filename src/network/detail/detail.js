@@ -1,7 +1,7 @@
 import { request } from '../requset';
 export function DetailData(iid) {
 	return request({
-		url: 'http://152.136.185.210:7878/api/m5/detail',
+		url: '/detail',
 		params: {
 			// type,
 			iid
@@ -10,7 +10,7 @@ export function DetailData(iid) {
 }
 export function recommends() {
 	return request({
-		url: 'http://152.136.185.210:7878/api/m5/recommend'
+		url: '/recommend'
 	});
 }
 export class itemShopInfo {

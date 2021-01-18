@@ -30,7 +30,13 @@
         v-show="!showTabControl"
         ref="Tabcontrol2"
       ></tab-control>
-      <goods :Goods="Goods[GoodsType]"></goods>
+      <goods>
+        <goods-item
+          v-for="(item, index) in Goods[GoodsType].list"
+          :key="index"
+          :goodsList="item"
+        />
+      </goods>
     </better-scroll>
     <back-top @click.native="backtop" v-show="isshowBackTop" />
   </div>
@@ -47,16 +53,16 @@ import TabControl from "components/common/TabControl/TabControl.vue";
 import keepPopular from "components/content/keepPopular/KeepPopular";
 import Goods from "components/common/GoodsList/Goods";
 
-
 // 好物推荐
 import HomeRec from "views/home/Homechild/HomeRec.vue";
 
 //请求数据
 import { getHomedata, Goodslist } from "network/home/home";
 // import { debounce } from "common/utils";
-import { itemImgLoad,showbackTop } from "common/mixin.js";
+import { itemImgLoad, showbackTop } from "common/mixin.js";
 //滚动插件
 import BetterScroll from "components/common/BetterScroll/BetterScroll";
+import GoodsItem from "../../components/common/GoodsList/GoodsItem.vue";
 
 export default {
   data() {
@@ -82,7 +88,7 @@ export default {
       },
       //商品类型
       GoodsType: "pop",
-      
+
       showTabControl: false,
       Tabcontrol: 0,
       homeLocation: 0,
@@ -100,8 +106,9 @@ export default {
     TabControl,
     Goods,
     BetterScroll,
+    GoodsItem,
   },
-  mixins: [itemImgLoad,showbackTop],
+  mixins: [itemImgLoad, showbackTop],
   created() {
     //ajax 获取数据
     this.getHomedata();
@@ -122,7 +129,7 @@ export default {
   //组件离开时
   deactivated() {
     //关闭事件总线的图片加载事件
-    this.$bus.$off('itemImgLoad',this.imgLoadOffFn)
+    this.$bus.$off("itemImgLoad", this.imgLoadOffFn);
     // 离开时保留用户浏览的所在位置
     this.homeLocation = this.$refs.scroll.scroll.y;
   },

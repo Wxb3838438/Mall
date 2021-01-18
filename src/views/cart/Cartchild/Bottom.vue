@@ -9,7 +9,7 @@
       <!-- 结算 -->
       <div class="settlement">
         <div class="total">合计：{{ totalprice }}</div>
-        <div class="settlement_item">结算({{ shopAlllength }})</div>
+        <div class="settlement_item" @click="calcClick">结算({{ shopAlllength }})</div>
       </div>
     </div>
   </div>
@@ -68,6 +68,11 @@ export default {
         });
       }
     },
+    calcClick(){    
+      if (!this.setAll) {
+        this.$toast.show('请选择购买的商品',2000)
+      }
+    }
   },
 };
 </script>
